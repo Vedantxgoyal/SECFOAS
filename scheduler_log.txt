@@ -1,0 +1,132 @@
+
+==================================================
+Run at: 2026-04-25 23:57:58.083091
+==========================================
+ SECFAOS - Smart Energy Optimization System
+==========================================
+
+----- LOADING METERS -----
+  Loaded meter1_clean.csv               | records=1728  | std=0.2672 | period=2023-05-19 to 2023-06-24
+  Loaded meter2_clean.csv               | records=4320  | std=0.0993 | period=2025-08-18 to 2025-11-16
+  Loaded meter3_clean.csv               | records=1495  | std=0.2551 | period=2025-08-29 to 2025-09-29
+  Loaded meter4_clean.csv               | records=2089  | std=0.1382 | period=2026-01-15 to 2026-02-27
+  Loaded meter5_clean.csv               | records=1914  | std=0.1723 | period=2026-01-18 to 2026-02-27
+  Loaded meter6_clean.csv               | records=1344  | std=0.1972 | period=2026-02-01 to 2026-02-28
+  Loaded meter7_clean.csv               | records=1344  | std=0.2628 | period=2026-02-01 to 2026-02-28
+  Loaded meter8_clean.csv               | records=2761  | std=0.1195 | period=2026-02-01 to 2026-03-30
+  Loaded meter9_clean.csv               | records=1344  | std=0.2254 | period=2026-02-01 to 2026-02-28
+  Loaded meter10_clean.csv              | records=1344  | std=0.1706 | period=2026-02-01 to 2026-02-28
+  Loaded meter11_clean.csv              | records=1344  | std=0.1525 | period=2026-02-01 to 2026-02-28
+
+  Combined dataset:
+    Meters loaded : 11/11
+    Total records : 9629
+    Period        : 2023-05-19 00:30:00 to 2026-03-30 12:00:00
+    Std           : 0.1901
+    Mean          : 0.3370
+    Min / Max     : 0.0000 / 1.0000
+  Variance check: std=0.1901 — OK
+  Split: train=7703 records | test=1926 records | ratio=80%/20%
+  ADF Statistic : -8.7922
+  p-value       : 0.0
+  Stationary    : True
+ADF Stationary: True
+  Scaler fitted  | train range: [0.0000, 1.0000]
+
+----- COMBINED METER SUMMARY -----
+Meters configured:         11
+Data directory:            D:\Projects\SECFAOS\data
+Data Period:               2023-05-19 to 2026-03-30
+Total Records:             9629
+Std (variance check):      0.1901
+Total Consumption (index): 3244.7222
+Average Daily Consumption: 3.0991 units/day
+Peak Slot Consumption:     1.0
+Min Slot Consumption:      0.0
+
+Generating EDA plots...
+
+----- BASELINE -----
+Naive MAE:  0.0628
+Naive RMSE: 0.1093
+
+----- SARIMA GRID SEARCH -----
+Best SARIMA Order:    (1, 0, 1)
+Best Seasonal Order:  (1, 0, 1, 48)
+Best SARIMA MAE:      0.1611
+Best SARIMA RMSE:     0.1884
+
+----- LSTM GRID SEARCH -----
+  Loading saved LSTM models — skipping retraining
+  Loaded model MAE on current test set: 0.0576
+  Loaded config: {'units': 32, 'dropout': 0.0, 'lr': 0.001, 'seq_len': 24}
+Best LSTM Config: {'units': 32, 'dropout': 0.0, 'lr': 0.001, 'seq_len': 24}
+Best LSTM MAE:    0.0576
+
+Selected Model: LSTM
+
+Generating future forecast...
+
+Forecast Components:
+  LSTM (direct) — mean=0.3585  std=0.0335  max=0.4221
+  Hist profile  — mean=0.3870  std=0.0877  max=0.7518
+  Blended       — mean=0.3756  std=0.0535  max=0.5842
+  Strategy      — 40% LSTM + 60% historical profile
+
+Future Forecast Sample:
+                     forecast_energy
+2026-03-30 12:30:00         0.368059
+2026-03-30 13:00:00         0.347869
+2026-03-30 13:30:00         0.353706
+2026-03-30 14:00:00         0.339524
+2026-03-30 14:30:00         0.306741
+2026-03-30 15:00:00         0.308154
+2026-03-30 15:30:00         0.321266
+2026-03-30 16:00:00         0.311308
+
+Forecast Diagnostics:
+  mean=0.3756  std=0.0541  min=0.3067  max=0.5842
+  Shape OK — realistic daily variation detected.
+
+----- DEVICE SCHEDULING -----
+  Device [EV Charger]: start=03:00 | duration=120min | power=1.5kWh/slot | cost=Rs 120.78
+  Device [Water Heater]: start=09:00 | duration=60min | power=1.0kWh/slot | cost=Rs 40.25
+
+  Device scheduling complete:
+    Total device energy : 8.0 kWh
+    Total device cost   : Rs 64.0
+
+==========================================
+ OPTIMIZATION IMPACT SUMMARY
+==========================================
+Energy Saved:          2.7043 units  (13.522 kWh approx)
+Cost Saved (Rs):       28.43
+Carbon Saved (kg CO2): 2.4796
+
+----- PEAK METRICS -----
+Peak Before:           0.5842 units  (2.921 kWh approx)
+Peak After:            0.5359 units  (2.679 kWh approx)
+Peak Reduction (%):    8.27
+
+----- LOAD FACTOR -----
+Before:                0.6429
+After:                 0.5957
+Improvement (%):       -4.72
+
+----- ANNUAL PROJECTION -----
+Annual Cost Saving (Rs):          10378.04
+Annual Carbon Reduction (kg CO2): 905.07
+
+Note: kWh values are approximate (scale factor = 5.0 kWh/slot max)
+
+System Execution Complete.
+
+Plots saved:
+  output_train_test_split.png
+  output_daily_pattern.png
+  output_weekly_overview.png
+  output_heatmap.png
+  output_forecast_comparison.png
+  output_optimization.png
+  output_peak_shaving_bars.png
+  output_cost_breakdown.png
